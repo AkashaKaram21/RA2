@@ -5,18 +5,25 @@ public class Fil extends Thread {
         this.nom = nom;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     @Override
     public void run() {
-        for (int i = 1; i <= 9; i++) {
-            System.out.println(nom + " " + i);
+        for (int i = 1; i <= 1000; i++) {
+            System.out.println(this.nom + " " + i);
 
             try {
-                Thread.sleep(1);
-            } catch (Exception e) {
-                System.out.println(e);
+                Thread.sleep(1); 
+            } catch (InterruptedException e) {
+                System.out.println("Fil interromput");
             }
         }
-        System.out.println("Acaba el fil " + nom);
+        System.out.println("Acaba el fil " + this.nom);
     }
 }
-
