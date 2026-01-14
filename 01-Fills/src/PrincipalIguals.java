@@ -1,14 +1,19 @@
 public class PrincipalIguals {
     public static void main(String[] args) {
-        Fil fil1 = new Fil("Juan");
-        Fil fil2 = new Fil("Pepe");
+        // Crear las dos instancias solicitadas
+        Fil juan = new Fil("Juan");
+        Fil pepe = new Fil("Pepe");
 
-        fil1.setPriority(Thread.MAX_PRIORITY); 
-        fil2.setPriority(Thread.MIN_PRIORITY); 
+        // Configurar prioridades (se pide MAX o MIN para forzar al planificador)
+        // En este caso, ponemos ambos a MAX_PRIORITY para que compitan equitativamente
+        juan.setPriority(Thread.MAX_PRIORITY);
+        pepe.setPriority(Thread.MAX_PRIORITY);
 
-        fil1.start();
-        fil2.start();
+        // Iniciar los hilos
+        pepe.start();
+        juan.start();
 
+        // El hilo principal termina de dar las órdenes y finaliza
         System.out.println("Acaba thread main");
     }
 }

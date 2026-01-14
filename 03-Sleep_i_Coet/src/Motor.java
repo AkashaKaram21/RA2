@@ -1,47 +1,44 @@
-import java.util.Random;
-
 public class Motor extends Thread {
-    private final int id;
-    private int potenciaActual = 0;
-    private int potenciaObjectiu = 0;
-    private boolean actiu = true;
-    private final Random random = new Random();
+    private int actual = 0;
+    private int objectiu = 0;
+    private boolean canviPendent = false;
 
-    public Motor(int id) {
-        this.id = id;
+    public Motor(String nom) {
+        super(nom);
     }
 
-    public synchronized void setPotencia(int p) {
-        this.potenciaObjectiu = p;
+    public synchronized void ordenarPotencia(int p) {
+        this.objectiu = p;
+        this.canviPendent = true; 
     }
 
     @Override
     public void run() {
-        try {
-            while (actiu) {
-                if (potenciaActual < potenciaObjectiu) {
-                    potenciaActual++;
-                    System.out.println("Motor " + id + ": Incre. Objectiu: " + potenciaObjectiu + " Actual: " + potenciaActual);
-                    Thread.sleep(1000 + random.nextInt(1001)); 
-                } else if (potenciaActual > potenciaObjectiu) {
-                    potenciaActual--;
-                    System.out.println("Motor " + id + ": Decre. Objectiu: " + potenciaObjectiu + " Actual: " + potenciaActual);
-                    Thread.sleep(1000 + random.nextInt(1001)); 
+        while (true) {
+            try {
+                if (canviPendent) {
+                    String accio;
+                    if (actual < objectiu) {
+                        actual++;
+                        accio = "Incre.";
+                    } else if (actual > objectiu) {
+                        actual--;
+                        accio = "Decre.";
+                    } else {
+                        accio = "FerRes";
+                        canviPendent = false; 
+                    }
+
+                    System.out.println(String.format("%s: %s Objectiu: %d Actual: %d", 
+                        getName(), accio, objectiu, actual));
+
+                    Thread.sleep(800 + (int)(Math.random() * 700));
                 } else {
-                    if (potenciaActual != 0 || potenciaObjectiu != 0) {
-                    
-                    }
-                    
-                    if (potenciaObjectiu == 0 && potenciaActual == 0) {
-                        System.out.println("Motor " + id + ": FerRes Objectiu: 0 Actual: 0 (Aturat)");
-                        actiu = false;
-                    }
-                    
-                    Thread.sleep(100);
+                    Thread.sleep(100); 
                 }
+            } catch (InterruptedException e) {
+                break;
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
         }
     }
 }

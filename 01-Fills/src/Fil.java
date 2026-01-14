@@ -1,29 +1,22 @@
 public class Fil extends Thread {
     private String nom;
 
+    // Constructor parametrizado para asignar el nombre al hilo
     public Fil(String nom) {
-        this.nom = nom;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
         this.nom = nom;
     }
 
     @Override
     public void run() {
-        for (int i = 1; i <= 1000; i++) {
-            System.out.println(this.nom + " " + i);
-
-            try {
-                Thread.sleep(1); 
-            } catch (InterruptedException e) {
-                System.out.println("Fil interromput");
+        for (int i = 1; i <= 9; i++) {
+            System.out.println(nom + " " + i);
+            
+            // Simulación de carga de trabajo para forzar el entrelazado
+            // sin usar Thread.sleep()
+            for (int j = 0; j < 1000; j++) {
+                // Bucle vacío para consumir ciclos de CPU
             }
         }
-        System.out.println("Acaba el fil " + this.nom);
+        System.out.println("Acaba el fil " + nom);
     }
 }
