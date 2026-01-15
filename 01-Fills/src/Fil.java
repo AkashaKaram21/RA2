@@ -1,9 +1,10 @@
 public class Fil extends Thread {
     private String nom;
+    private boolean usaBucle; 
 
-    // Constructor parametrizado para asignar el nombre al hilo
-    public Fil(String nom) {
+    public Fil(String nom, boolean usaBucle) {
         this.nom = nom;
+        this.usaBucle = usaBucle;
     }
 
     @Override
@@ -11,10 +12,15 @@ public class Fil extends Thread {
         for (int i = 1; i <= 9; i++) {
             System.out.println(nom + " " + i);
             
-            // Simulación de carga de trabajo para forzar el entrelazado
-            // sin usar Thread.sleep()
-            for (int j = 0; j < 1000; j++) {
-                // Bucle vacío para consumir ciclos de CPU
+            if (this.usaBucle) {
+                for (int j = 0; j < 1000; j++) {
+                }
+            } else {
+                try {
+                    Thread.sleep(1); 
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
         System.out.println("Acaba el fil " + nom);

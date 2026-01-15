@@ -1,15 +1,16 @@
 public class PrincipalDiferents {
     public static void main(String[] args) {
-        Fil filJuan = new Fil("Juan");
-        Fil filPepe = new Fil("Pepe");
 
-        // Juan prioridad máxima (10)
-        filJuan.setPriority(Thread.MAX_PRIORITY);
-        // Pepe prioridad mínima (1)
-        filPepe.setPriority(Thread.MIN_PRIORITY);
+        Fil pepe = new Fil("Pepe",true);
+        Fil juan = new Fil("Juan",true);
 
-        filPepe.start();
-        filJuan.start();
+        juan.setPriority(Thread.MAX_PRIORITY); 
+
+        pepe.setPriority(Thread.MIN_PRIORITY); 
+
+        pepe.start();
+        
+        juan.start();
 
         System.out.println("Acaba thread main");
     }
