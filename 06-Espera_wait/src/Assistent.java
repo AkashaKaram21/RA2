@@ -4,37 +4,37 @@ public class Assistent extends Thread {
     private String nom;
     private Esdeveniment esdeveniment;
     private Random random;
-    private boolean haFetReserva;
-
-    public Assistent(String nom) {
+    private boolean teReserva;
+    
+    public Assistent(String nom, Esdeveniment esdeveniment) {
         this.nom = nom;
-        this.esdeveniment = new Esdeveniment(5);
+        this.esdeveniment = esdeveniment;
         this.random = new Random();
-        this.haFetReserva = false;
+        this.teReserva = false;
     }
-
-    public String getNom() {
-        return nom;
-    }
-
+    
     @Override
     public void run() {
         try {
-            if (random.nextBoolean()) {
-                esdeveniment.ferReserva(this);
-                haFetReserva = true;
-            } else {
-                if (haFetReserva) {
-                    esdeveniment.cancelaReserva(this);
+            while (true) {
+                if (random.nextBoolean()) {
+                    if (!teReserva) {
+                        esdeveniment.ferReserva(nom);
+                        teReserva = true;
+                    }
                 } else {
-                    esdeveniment.cancelaReserva(this);
+                    if (teReserva) {
+                        esdeveniment.cancelaReserva(nom);
+                        teReserva = false;
+                    } else {
+                        esdeveniment.cancelaReserva(nom);
+                    }
                 }
+                
+                Thread.sleep(random.nextInt(1000));
             }
-            
-            Thread.sleep(random.nextInt(1000));
-
         } catch (InterruptedException e) {
-            System.out.println(nom + " ha estat interromput");
+            // Se detiene el hilo
         }
     }
 }
