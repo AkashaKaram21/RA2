@@ -1,16 +1,18 @@
 import java.util.Random;
 
-public class Assistent extends Thread {
+class Assistent extends Thread {
     private String nom;
     private Esdeveniment esdeveniment;
     private Random random;
-    private boolean teReserva;
     
     public Assistent(String nom, Esdeveniment esdeveniment) {
         this.nom = nom;
         this.esdeveniment = esdeveniment;
         this.random = new Random();
-        this.teReserva = false;
+    }
+    
+    public String getNom() {
+        return nom;
     }
     
     @Override
@@ -18,23 +20,15 @@ public class Assistent extends Thread {
         try {
             while (true) {
                 if (random.nextBoolean()) {
-                    if (!teReserva) {
-                        esdeveniment.ferReserva(nom);
-                        teReserva = true;
-                    }
+                    esdeveniment.ferReserva(this);
                 } else {
-                    if (teReserva) {
-                        esdeveniment.cancelaReserva(nom);
-                        teReserva = false;
-                    } else {
-                        esdeveniment.cancelaReserva(nom);
-                    }
+                    esdeveniment.cancelaReserva(this);
                 }
                 
                 Thread.sleep(random.nextInt(1000));
             }
         } catch (InterruptedException e) {
-            // Se detiene el hilo
+            System.out.println(nom + " ha estat interromput.");
         }
     }
 }
