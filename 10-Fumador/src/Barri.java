@@ -1,34 +1,27 @@
 public class Barri {
-
-    private Estanc estanc;
-    private Fumador[] fumadors;
+    public Estanc estanc;
+    public Fumador fumadors[] = new Fumador[3];
 
     public Barri() {
-        estanc = new Estanc();
-
-        fumadors = new Fumador[3];
+        this.estanc = new Estanc();
         for (int i = 0; i < 3; i++) {
             fumadors[i] = new Fumador(estanc, i);
         }
-
-        for (Fumador f : fumadors) {
-            f.start();
-        }
-
-        estanc.start();
-
-        for (Fumador f : fumadors) {
-            try {
-                f.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        estanc.tancarEstanc();
     }
 
-    public static void main(String[] args) {
-        new Barri();
+    public static void main(String[] args) throws InterruptedException {
+        Barri barri = new Barri();
+ 
+        for (int i = 0; i < 3; i++) {
+            barri.fumadors[i].start();
+        }
+ 
+        barri.estanc.start();
+ 
+        for (int i = 0; i < 3; i++) {
+            barri.fumadors[i].join();
+        }
+ 
+        barri.estanc.tancarEstanc();
     }
 }
